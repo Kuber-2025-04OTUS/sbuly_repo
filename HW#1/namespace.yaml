@@ -4,7 +4,3 @@ metadata:
   name: homework
   labels:
     name: homework
-spec:
-  containers:
-  - name: myapp
-    image: nginx
