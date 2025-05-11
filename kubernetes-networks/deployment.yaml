@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homework-deployment
+  namespace: homework
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: homework-container
+        image: nginx:latest 
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /homework/index.html
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: homework-volume
+          mountPath: /homework
+      volumes:
+      - name: homework-volume
